@@ -14,6 +14,7 @@ SELECT `degrees`.`name` AS "nome_dipartimento", `degrees`.`address`, `degrees`.`
 FROM `departments`
 JOIN `degrees` 
 ON `degrees`.`department_id` = `departments`.`id`;
+WHERE `departments`.`name` LIKE = "Dipartimento di Neuroscenze"
 
 ----------------------------------------------------------------------------------------------
 
@@ -61,13 +62,12 @@ WHERE `departments`.`name` = "Dipartimento di matematica";
 BONUS) Selezionare per ogni studente quanti tentativi d’esame ha sostenuto per
 superare ciascuno dei suoi esami
 
-SELECT `students`.`name`, `students`.`surname`, `students`.`registration_number`, `courses`.`name` AS "nome_corso", `exam_student`.`vote`, COUNT(`exams`.`course_id`) AS "tentativi"
+SELECT `students`.`name`, `students`.`surname`, `courses`.`name` AS "corso", COUNT(`exam_student`.`exam_id`) AS "tentativi", MAX(`exam_student`.`vote`) AS "voto_massimo"
 FROM `students`
 JOIN `exam_student` ON `students`.`id` = `exam_student`.`student_id`
 JOIN `exams` ON `exam_student`.`exam_id` = `exams`.`id`
 JOIN `courses` ON `courses`.`id` = `exams`.`course_id` 
-GROUP BY `students`.`registration_number`, `exams`.`course_id`;
+GROUP BY `students`.`registration_number`, `courses`.`id` HAVING `voto_massimo` >= 18;
 
-ROTTO: la query ritorna anche il conto di chi non ha superato mai l'esame
 ----------------------------------------------------------------------------------------------
 
